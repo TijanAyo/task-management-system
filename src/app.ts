@@ -1,7 +1,7 @@
-import * as dotenv from "dotenv";
-dotenv.config();
+import "./config/env";
 import express, { Request, Response } from "express";
 import compression from "compression";
+import "./config/db";
 
 const app = express();
 
