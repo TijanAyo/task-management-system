@@ -59,8 +59,14 @@ export class TaskController {
     }
   }
 
-  async generateTimeReport() {
-    return "generateTimeReport";
+  async generateTimeReport(req: Request, res: Response, next: NextFunction) {
+    try {
+      const userId = req.user!.id;
+      const result = await taskService.generateTimeReport(Number(userId));
+      return res.status(200).json(result);
+    } catch (err) {
+      return next(err);
+    }
   }
 
   async generateCompletionReport(

@@ -31,7 +31,7 @@ router.delete(
 router.get(
   "/report-time",
   authorize,
-  hasPermission("generate-time-report"),
+  hasPermission("generate-report-time"),
   taskController.generateTimeReport
 );
 router.get(

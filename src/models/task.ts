@@ -40,6 +40,14 @@ class Task extends Model {
   @Column(DataType.BOOLEAN)
   deletedFlag!: boolean;
 
+  @AllowNull(true)
+  @Column(DataType.DATE)
+  startTime?: Date;
+
+  @AllowNull(true)
+  @Column(DataType.DATE)
+  endTime?: Date;
+
   @ForeignKey(() => User)
   @AllowNull(false)
   @Column(DataType.INTEGER)

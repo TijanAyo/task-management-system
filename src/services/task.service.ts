@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { AppError, AppResponse } from "../helpers";
 import { ICreateTaskPayload, IUpdateTaskPayload } from "../helpers/interface";
 import { Task, User } from "../models";
@@ -75,9 +76,30 @@ export class TaskService {
           "Unauthorized: This task does not belong to the user"
         );
       }
+      const updatePayload: any = { ...payload };
 
-      await task.update(payload);
-      return AppResponse("Task updated successfully", task);
+      if (payload.status === "in-progress" && !task.startTime) {
+        updatePayload.startTime = new Date();
+      }
+
+      if (payload.status === "completed") {
+        if (!task.startTime) {
+          throw AppError.badRequest(
+            "Cannot mark task as completed before it has been started"
+          );
+        }
+
+        if (!task.endTime) {
+          updatePayload.endTime = new Date();
+        }
+      }
+
+      await task.update(updatePayload);
+
+      const { deletedFlag, createdAt, updatedAt, user, ...sanitizedTask } =
+        task.toJSON();
+
+      return AppResponse("Task updated successfully", sanitizedTask);
     } catch (error) {
       throw error;
     }
@@ -114,13 +136,39 @@ export class TaskService {
     }
   }
 
-  async generateTimeReport() {
+  async generateTimeReport(userId: number) {
     try {
-      // logic goes here
+      const tasks = await Task.findAll({
+        where: {
+          userId,
+          deletedFlag: false,
+          startTime: { [Op.not]: null },
+          endTime: { [Op.not]: null },
+        },
+      });
+
+      if (tasks.length === 0) {
+        return AppResponse("No completed tasks found", { totalMinutes: 0 });
+      }
+
+      let totalMinutes = 0;
+
+      tasks.forEach((task) => {
+        const start = new Date(task.startTime!);
+        const end = new Date(task.endTime!);
+        const durationMs = end.getTime() - start.getTime();
+        const taskMinutes = durationMs / (1000 * 60);
+        totalMinutes += taskMinutes;
+      });
+
+      return AppResponse("Total time spent on tasks calculated successfully", {
+        totalMinutes: Number(totalMinutes.toFixed(2)),
+        totalHours: (totalMinutes / 60).toFixed(2),
+      });
     } catch (error) {
+      console.error("Error in generateTimeReport:", error);
       throw error;
     }
-    // this should get the total time spent across all task by the authenticate user
   }
 
   async generateCompletionReport(userId: number) {
