@@ -25,6 +25,10 @@ export class AppError extends Error {
     );
   }
 
+  static forbidden(message: string): AppError {
+    return new AppError(message, "FORBIDDEN", StatusCodes.FORBIDDEN);
+  }
+
   static unauthorized(message: string): AppError {
     return new AppError(message, "UNAUTHORIZED_ERR", StatusCodes.FORBIDDEN);
   }
