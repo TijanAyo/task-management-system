@@ -14,9 +14,13 @@ export class AuthController {
     }
   }
 
-  async login(req: Request, res: Response) {
-    // const payload = req.body;
-    // const result = await authService.login(payload);
-    // res.status(200).json(result);
+  async login(req: Request, res: Response, next: NextFunction) {
+    try {
+      const payload = req.body;
+      const result = await authService.login(payload);
+      res.status(201).json(result);
+    } catch (err) {
+      return next(err);
+    }
   }
 }
