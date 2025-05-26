@@ -1,4 +1,4 @@
-import { User } from "../models/user";
+import { User, Role } from "../models";
 import { ILoginPayload, IRegisterPayload } from "../helpers/interface";
 import { AppError, AppResponse } from "../helpers";
 import bcrypt from "bcrypt";
@@ -27,10 +27,12 @@ export class AuthService {
       }
 
       const hashedPassword = await this.hashPayload(payload.password);
+      const defaultRole = await Role.findOne({ where: { title: "user" } });
 
       await User.create({
-        email: payload.email,
+        email: payload.email.toLowerCase(),
         password: hashedPassword,
+        roleId: defaultRole!.id,
       });
 
       return AppResponse("User created successfully");
