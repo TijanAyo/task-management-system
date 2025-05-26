@@ -23,11 +23,11 @@ class Permission extends Model {
   @Column(DataType.INTEGER)
   id!: number;
 
+  @AllowNull(false)
   @Column({
     type: DataType.STRING,
     unique: true,
   })
-  @AllowNull(false)
   title!: string;
 
   @Column(DataType.TEXT)

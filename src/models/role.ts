@@ -9,9 +9,11 @@ import {
   Default,
   BelongsToMany,
   AllowNull,
+  HasMany,
 } from "sequelize-typescript";
 import { Permission } from "./permission";
 import { RolePermission } from "./role_permission";
+import { User } from "./user";
 
 @Table({
   timestamps: true,
@@ -23,8 +25,8 @@ class Role extends Model {
   @Column(DataType.INTEGER)
   id!: number;
 
-  @Column(DataType.STRING)
   @AllowNull(false)
+  @Column(DataType.STRING)
   title!: string;
 
   @Default(false)
@@ -33,6 +35,9 @@ class Role extends Model {
 
   @BelongsToMany(() => Permission, () => RolePermission)
   permissions!: Permission[];
+
+  @HasMany(() => User)
+  users!: User[];
 }
 
 export { Role };

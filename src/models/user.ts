@@ -10,7 +10,10 @@ import {
   AllowNull,
   Validate,
   Default,
+  ForeignKey,
+  BelongsTo,
 } from "sequelize-typescript";
+import { Role } from "./role";
 
 @Table({
   timestamps: true,
@@ -35,6 +38,14 @@ class User extends Model {
   @Default(false)
   @Column(DataType.BOOLEAN)
   deletedFlag!: boolean;
+
+  @ForeignKey(() => Role)
+  @AllowNull(false)
+  @Column(DataType.INTEGER)
+  roleId!: number;
+
+  @BelongsTo(() => Role)
+  role!: Role;
 }
 
 export { User };
