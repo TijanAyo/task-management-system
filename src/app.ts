@@ -2,7 +2,7 @@ import "./config/env";
 import express, { Request, Response } from "express";
 import compression from "compression";
 import "./config/db";
-import { authRoute, taskRoute } from "./routes";
+import { authRoute, taskRoute, adminRoute } from "./routes";
 import { errorHandler } from "./helpers/error-handler";
 
 const app = express();
@@ -13,6 +13,7 @@ app.use(compression());
 
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/tasks", taskRoute);
+app.use("/api/v1/admin", adminRoute);
 
 app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json({

@@ -18,7 +18,7 @@ export class TaskController {
   async viewTask(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.user!.id;
-      const { page = 1, limit = 5 } = req.query;
+      const { page = 1, limit = 10 } = req.query;
       const result = await taskService.viewTask(
         userId,
         Number(page),
