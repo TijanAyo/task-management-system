@@ -1,4 +1,5 @@
-import { Sequelize } from "sequelize";
+import { Sequelize } from "sequelize-typescript";
+import { User } from "../models";
 
 export const credentials = {
   host: String(process.env.DB_HOST),
@@ -16,6 +17,7 @@ const sequelize = new Sequelize(
     host: credentials.host,
     dialect: "postgres",
     port: credentials.port,
+    models: [User],
   }
 );
 

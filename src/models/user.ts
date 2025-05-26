@@ -1,28 +1,40 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../config";
+import "reflect-metadata";
+import {
+  Table,
+  Column,
+  PrimaryKey,
+  AutoIncrement,
+  Model,
+  DataType,
+  Unique,
+  AllowNull,
+  Validate,
+  Default,
+} from "sequelize-typescript";
 
-const User = sequelize.define("User", {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  email: {
-    type: DataTypes.STRING,
-    unique: true,
-    allowNull: false,
-    validate: {
-      isEmail: true,
-    },
-  },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  deletedFlag: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
-});
+@Table({
+  timestamps: true,
+  tableName: "Users",
+})
+class User extends Model {
+  @PrimaryKey
+  @AutoIncrement
+  @Column(DataType.INTEGER)
+  id!: number;
+
+  @Unique
+  @AllowNull(false)
+  @Validate({ isEmail: true })
+  @Column(DataType.STRING)
+  email!: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  password!: string;
+
+  @Default(false)
+  @Column(DataType.BOOLEAN)
+  deletedFlag!: boolean;
+}
 
 export { User };
