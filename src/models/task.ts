@@ -6,51 +6,47 @@ import {
   AutoIncrement,
   Model,
   DataType,
-  Unique,
   AllowNull,
-  Validate,
   Default,
-  ForeignKey,
   BelongsTo,
-  HasMany,
+  ForeignKey,
 } from "sequelize-typescript";
-import { Role } from "./role";
-import { Task } from "./task";
+import { User } from "./user";
 
 @Table({
   timestamps: true,
-  tableName: "Users",
+  tableName: "Tasks",
 })
-class User extends Model {
+class Task extends Model {
   @PrimaryKey
   @AutoIncrement
   @Column(DataType.INTEGER)
   id!: number;
 
-  @Unique
   @AllowNull(false)
-  @Validate({ isEmail: true })
   @Column(DataType.STRING)
-  email!: string;
+  title!: string;
+
+  @AllowNull(true)
+  @Column(DataType.TEXT)
+  description?: string;
 
   @AllowNull(false)
-  @Column(DataType.STRING)
-  password!: string;
+  @Default("pending")
+  @Column(DataType.ENUM("pending", "in-progress", "completed"))
+  status!: string;
 
   @Default(false)
   @Column(DataType.BOOLEAN)
   deletedFlag!: boolean;
 
-  @ForeignKey(() => Role)
+  @ForeignKey(() => User)
   @AllowNull(false)
   @Column(DataType.INTEGER)
-  roleId!: number;
+  userId!: number;
 
-  @BelongsTo(() => Role)
-  role!: Role;
-
-  @HasMany(() => Task)
-  tasks!: Task[];
+  @BelongsTo(() => User)
+  user!: User;
 }
 
-export { User };
+export { Task };

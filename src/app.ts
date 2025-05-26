@@ -2,7 +2,7 @@ import "./config/env";
 import express, { Request, Response } from "express";
 import compression from "compression";
 import "./config/db";
-import { authRoute } from "./routes/auth.route";
+import { authRoute, taskRoute } from "./routes";
 import { errorHandler } from "./helpers/error-handler";
 
 const app = express();
@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(compression());
 
 app.use("/api/v1/auth", authRoute);
+app.use("/api/v1/tasks", taskRoute);
 
 app.get("/", (_req: Request, res: Response) => {
   return res.status(200).json({
