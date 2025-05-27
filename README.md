@@ -107,7 +107,30 @@ The project includes Jest for testing
 npm test
 ```
 
+## Database Setup and Seeding
+
+1. Run database migrations:
+
+```bash
+npm run db:migrate
+```
+
+3. Seed the database with initial data:
+
+```bash
+npm run db:seed
+```
+
+### Default Admin Credentials
+
+After seeding, you can use the following admin credentials to test admin endpoints:
+
+- Email: admin@example.com
+- Password: Password123
+
 ## API Documentation
+
+The API documentation is available in Postman. [Here](https://documenter.getpostman.com/view/19118409/2sB2qdfKAv)
 
 The API endpoints are organized as follows:
 
