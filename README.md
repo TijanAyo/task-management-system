@@ -62,10 +62,10 @@ Note: For production deployment, make sure to:
 
 ## Running with Docker
 
-1. Start the PostgreSQL database:
+1. Start the PostgreSQL database with .env.dev credential
 
 ```bash
-docker-compose up -d
+docker compose --env-file .env.dev up
 ```
 
 2. Build and run the application:
@@ -113,13 +113,20 @@ The API endpoints are organized as follows:
 
 ### Authentication
 
-- POST /api/auth/register - Register a new user
-- POST /api/auth/login - Login user
+- POST /api/v1/auth/register - Register a new user
+- POST /api/v1/auth/login - Login user
 
 ### Tasks
 
-- GET /api/tasks - Get all tasks
-- POST /api/tasks - Create a new task
-- GET /api/tasks/:id - Get a specific task
-- PUT /api/tasks/:id - Update a task
-- DELETE /api/tasks/:id - Delete a task
+- GET /api/v1/tasks - Get all tasks
+- POST /api/v1/tasks - Create a new task
+- GET /api/v1/tasks/:taskId - Get a specific task
+- PATCH /api/v1/tasks/:taskId - Update a task
+- DELETE /api/v1/tasks/:taskId - Delete a task
+- GET /api/v1/tasks/report-time - Generate task time report across all task
+- GET /api/v1/task/reports - Generate completion report across all task
+
+### Admin
+
+- GET /api/v1/admin/view-users - View all users on the app
+- GET /api/v1/admin/tasks/view-task - View all task on the app
